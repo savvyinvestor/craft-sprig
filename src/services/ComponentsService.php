@@ -60,7 +60,7 @@ class ComponentsService extends Component
             $type = 'template';
 
             if (!Craft::$app->getView()->doesTemplateExist($value)) {
-                throw new BadRequestHttpException(Craft::t('sprig', 'Unable to find the component or template “{value}”.', [
+                throw new BadRequestHttpException(Craft::t('data-sprig', 'Unable to find the component or template “{value}”.', [
                     'value' => $value,
                 ]));
             }
@@ -83,11 +83,11 @@ class ComponentsService extends Component
         $attributes = array_merge(
             [
                 'id' => $id,
-                'hx-target' => 'this',
-                'hx-include' => '#'.$id.' *',
-                'hx-trigger' => 'refresh',
-                'hx-get' => UrlHelper::actionUrl(self::RENDER_CONTROLLER_ACTION),
-                'hx-vars' => $this->parseVars($vars),
+                'data-hx-target' => 'this',
+                'data-hx-include' => '#'.$id.' *',
+                'data-hx-trigger' => 'refresh',
+                'data-hx-get' => UrlHelper::actionUrl(self::RENDER_CONTROLLER_ACTION),
+                'data-hx-vars' => $this->parseVars($vars),
             ],
             $attributes
         );
@@ -153,7 +153,7 @@ class ComponentsService extends Component
 
         /** @var DOMElement $element */
         foreach ($dom->getElementsByTagName('*') as $element) {
-            if ($element->hasAttribute('sprig')) {
+            if ($element->hasAttribute('data-sprig')) {
                 $verb = 'get';
                 $params = [];
 
@@ -167,12 +167,12 @@ class ComponentsService extends Component
 
                 if ($action) {
                     $params['sprig:action'] = Craft::$app->getSecurity()->hashData($action);
-                    $element->setAttribute('hx-vars', $this->parseVars([
+                    $element->setAttribute('data-hx-vars', $this->parseVars([
                         'sprig:action' => Craft::$app->getSecurity()->hashData($action)
                     ]));
                 }
 
-                $element->setAttribute('hx-'.$verb,
+                $element->setAttribute('data-hx-'.$verb,
                     UrlHelper::actionUrl(self::RENDER_CONTROLLER_ACTION, $params)
                 );
             }
@@ -181,7 +181,7 @@ class ComponentsService extends Component
                 $value = $this->getElementAttribute($element, $attribute);
 
                 if ($value) {
-                    $element->setAttribute('hx-'.$attribute, $value);
+                    $element->setAttribute('data-hx-'.$attribute, $value);
                 }
             }
         }
@@ -231,7 +231,7 @@ class ComponentsService extends Component
      */
     public function getElementAttribute(DOMElement $element, string $attribute): string
     {
-        $prefixes = ['s', 'sprig'];
+        $prefixes = ['s', 'data-sprig'];
 
         foreach ($prefixes as $prefix) {
             $value = $element->getAttribute($prefix.'-'.$attribute);

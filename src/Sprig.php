@@ -83,7 +83,7 @@ class Sprig extends Plugin
             function(Event $event) {
                 /** @var CraftVariable $variable */
                 $variable = $event->sender;
-                $variable->set('sprig', self::$sprigVariable);
+                $variable->set('data-sprig', self::$sprigVariable);
             }
         );
     }
