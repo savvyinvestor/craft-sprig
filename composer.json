@@ -1,5 +1,5 @@
 {
-    "name": "putyourlightson/craft-sprig",
+    "name": "savvyinvestor/craft-sprig",
     "description": "A reactive Twig component framework for Craft.",
     "version": "1.0.0-beta.9",
     "type": "craft-plugin",
